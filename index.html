@@ -3,71 +3,122 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Naxxex Music Player</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     body {
-      background-color: #f5f5f5;
-      color: #333333;
+      background-color: #1a1a1a;
+      color: #f5f5f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .sidebar {
-      background-color: #ececec;
+      background-color: #2d2d2d;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       width: 220px;
       height: 100vh;
       padding: 1rem;
+      transition: width 0.3s;
     }
 
     .sidebar h1 {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
       font-weight: bold;
       margin-bottom: 2rem;
     }
 
+    .sidebar p {
+      font-size: 0.875rem;
+      color: #a3a3a3;
+    }
+
     .search-input {
-      background-color: #cccccc;
-      padding: 1rem;
+      background-color: #333333;
+      padding: 0.75rem 1rem;
       width: 100%;
       margin-bottom: 1rem;
-      border-radius: 50px;
+      border-radius: 25px;
       color: #ffffff;
       transition: background-color 0.3s, transform 0.3s;
     }
 
     .search-input:focus {
-      background-color: #b3b3b3;
-      transform: scale(1.02);
+      background-color: #444444;
+      outline: none;
     }
 
     .search-button {
       background-color: #3498db;
-      padding: 1rem;
+      padding: 0.75rem;
       width: 100%;
       border: none;
-      border-radius: 50px;
+      border-radius: 25px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.3s;
     }
 
     .search-button:hover {
       background-color: #5dade2;
-      transform: scale(1.05);
     }
 
     .result-item {
-      background-color: #ececec;
-      padding: 1rem;
+      background-color: #2d2d2d;
+      padding: 0.75rem;
       margin-bottom: 0.5rem;
       border-radius: 8px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
       transition: transform 0.3s, background-color 0.4s;
     }
 
     .result-item:hover {
-      transform: scale(1.05);
-      background-color: #d1d1d1;
+      background-color: #3a3a3a;
+    }
+
+    .result-item img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+    }
+
+    .result-item span {
+      flex-grow: 1;
+      font-size: 0.875rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 80px;
+      }
+
+      .sidebar h1 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .sidebar p {
+        display: none;
+      }
+
+      .search-input, .search-button {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+      }
+
+      .result-item img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .result-item span {
+        font-size: 0.75rem;
+      }
     }
   </style>
 </head>
@@ -75,10 +126,10 @@
 <body class="flex">
   <div class="sidebar flex flex-col items-start p-6">
     <h1>Naxxex</h1>
-    <p class="mt-2 text-gray-400">Your music, your vibe.</p>
+    <p>Your music, your vibe.</p>
   </div>
 
-  <div class="flex-1 p-10">
+  <div class="flex-1 p-6">
     <div class="max-w-lg mx-auto">
       <input type="text" id="searchInput" class="search-input" placeholder="Search for a song..." />
       <button id="searchBtn" class="search-button mt-2">Search</button>
@@ -103,10 +154,10 @@
         const videoId = item.id.videoId;
         const title = item.snippet.title;
         const thumbnailUrl = item.snippet.thumbnails.medium.url;
-        const artist = item.snippet.channelTitle
+        const artist = item.snippet.channelTitle;
         const li = document.createElement('li');
         li.className = 'result-item';
-        li.innerHTML = `<img src="${thumbnailUrl}" class="w-16 h-16 mr-4 rounded-md"><span>${title}</span>`;
+        li.innerHTML = `<img src="${thumbnailUrl}" class="rounded-md"><span>${title}</span>`;
         li.addEventListener('click', () => {
           window.location.href = `player.html?videoId=${videoId}&artist=${encodeURIComponent(artist)}&title=${encodeURIComponent(title)}&thumbnail=${encodeURIComponent(thumbnailUrl)}`;
         });
