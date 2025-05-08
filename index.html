@@ -13,6 +13,21 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
+    .header {
+      background-color: #007AFF;
+      color: #FFFFFF;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: bold;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      text-shadow: 0px 0px 8px rgba(0, 122, 255, 0.5);
+    }
+
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -27,10 +42,12 @@
     .bottom-nav img {
       width: 24px;
       height: 24px;
+      cursor: pointer;
     }
 
     .main {
       padding: 1rem;
+      padding-top: 70px;
       padding-bottom: 70px;
       background-color: #FFFFFF;
       min-height: 100vh;
@@ -47,23 +64,6 @@
       outline: none;
     }
 
-    .search-button {
-      background-color: #007AFF;
-      padding: 0.75rem;
-      width: 100%;
-      border: none;
-      border-radius: 15px;
-      cursor: pointer;
-      color: #FFFFFF;
-      font-weight: bold;
-      margin-bottom: 1rem;
-      transition: background-color 0.3s;
-    }
-
-    .search-button:hover {
-      background-color: #005BB5;
-    }
-
     .result-item {
       background-color: #F9F9F9;
       padding: 1rem;
@@ -77,69 +77,33 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
-    .result-item:hover {
-      background-color: #ECECEC;
-    }
-
-    .result-item img {
-      width: 50px;
-      height: 50px;
-      border-radius: 10px;
-    }
-
-    .result-item span {
-      flex-grow: 1;
-      font-size: 1rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    @media (max-width: 768px) {
-      .search-input {
-        padding: 0.5rem 0.75rem;
-      }
-
-      .search-button {
-        padding: 0.5rem;
-      }
-
-      .result-item img {
-        width: 40px;
-        height: 40px;
-      }
-
-      .result-item span {
-        font-size: 0.875rem;
-      }
-    }
   </style>
 </head>
 
 <body>
 
+  <div class="header">Naxxex Music Player</div>
+
   <div class="main">
     <input type="text" id="searchInput" class="search-input" placeholder="Search for a song..." />
-    <button id="searchBtn" class="search-button">Search</button>
     <ul id="results" class="space-y-2 overflow-y-auto max-h-[400px]"></ul>
   </div>
 
   <div class="bottom-nav">
-    <img src="https://img.icons8.com/ios-filled/50/007AFF/music.png" alt="Library">
-    <img src="https://img.icons8.com/ios-filled/50/007AFF/search.png" alt="Search">
-    <img src="https://img.icons8.com/ios-filled/50/007AFF/settings.png" alt="Settings">
+    <img id="libraryBtn" src="https://img.icons8.com/ios-filled/50/007AFF/music.png" alt="Library">
+    <img id="searchBtn" src="https://img.icons8.com/ios-filled/50/007AFF/search.png" alt="Search">
+    <img id="settingsBtn" src="https://img.icons8.com/ios-filled/50/007AFF/settings.png" alt="Settings">
   </div>
 
   <script>
     const apiKey = 'AIzaSyAfsxAy-IBL-metOAS8QGyC6w1OnoG0cng';
-    const searchBtn = document.getElementById('searchBtn');
     const searchInput = document.getElementById('searchInput');
     const results = document.getElementById('results');
+    const searchBtn = document.getElementById('searchBtn');
+    const libraryBtn = document.getElementById('libraryBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
 
-    searchBtn.addEventListener('click', async () => {
-      const query = searchInput.value.trim();
-      if (!query) return;
-
+    async function searchMusic(query) {
       const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&key=${apiKey}&type=video&videoCategoryId=10&maxResults=10`);
       const data = await response.json();
       results.innerHTML = '';
@@ -156,7 +120,23 @@
         });
         results.appendChild(li);
       });
+    }
+
+    searchBtn.addEventListener('click', () => {
+      const query = searchInput.value.trim();
+      if (!query) return;
+      searchMusic(query);
     });
+
+    libraryBtn.addEventListener('click', () => {
+      const firstItem = document.querySelector('.result-item');
+      if (firstItem) firstItem.click();
+    });
+
+    settingsBtn.addEventListener('click', () => {
+      alert('Settings functionality coming soon!');
+    });
+
   </script>
 
 </body>
