@@ -3,138 +3,131 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Naxxex Music Player</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     body {
-      background-color: #1a1a1a;
-      color: #f5f5f5;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #FFFFFF;
+      color: #000000;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
-    .sidebar {
-      background-color: #2d2d2d;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 220px;
-      height: 100vh;
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #F8F8F8;
+      display: flex;
+      justify-content: space-around;
+      padding: 0.5rem 0;
+      box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .bottom-nav img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .main {
       padding: 1rem;
-      transition: width 0.3s;
-    }
-
-    .sidebar h1 {
-      font-size: 1.75rem;
-      font-weight: bold;
-      margin-bottom: 2rem;
-    }
-
-    .sidebar p {
-      font-size: 0.875rem;
-      color: #a3a3a3;
+      padding-bottom: 70px;
+      background-color: #FFFFFF;
+      min-height: 100vh;
     }
 
     .search-input {
-      background-color: #333333;
+      background-color: #F0F0F5;
       padding: 0.75rem 1rem;
       width: 100%;
       margin-bottom: 1rem;
-      border-radius: 25px;
-      color: #ffffff;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-
-    .search-input:focus {
-      background-color: #444444;
+      border-radius: 15px;
+      border: 1px solid #D1D1D6;
+      color: #000000;
       outline: none;
     }
 
     .search-button {
-      background-color: #3498db;
+      background-color: #007AFF;
       padding: 0.75rem;
       width: 100%;
       border: none;
-      border-radius: 25px;
+      border-radius: 15px;
       cursor: pointer;
-      transition: background-color 0.3s, transform 0.3s;
+      color: #FFFFFF;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      transition: background-color 0.3s;
     }
 
     .search-button:hover {
-      background-color: #5dade2;
+      background-color: #005BB5;
     }
 
     .result-item {
-      background-color: #2d2d2d;
-      padding: 0.75rem;
+      background-color: #F9F9F9;
+      padding: 1rem;
       margin-bottom: 0.5rem;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 1rem;
-      transition: transform 0.3s, background-color 0.4s;
+      transition: background-color 0.3s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     .result-item:hover {
-      background-color: #3a3a3a;
+      background-color: #ECECEC;
     }
 
     .result-item img {
-      width: 60px;
-      height: 60px;
-      border-radius: 8px;
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
     }
 
     .result-item span {
       flex-grow: 1;
-      font-size: 0.875rem;
+      font-size: 1rem;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     @media (max-width: 768px) {
-      .sidebar {
-        width: 80px;
+      .search-input {
+        padding: 0.5rem 0.75rem;
       }
 
-      .sidebar h1 {
-        font-size: 1rem;
-        margin-bottom: 1rem;
-      }
-
-      .sidebar p {
-        display: none;
-      }
-
-      .search-input, .search-button {
+      .search-button {
         padding: 0.5rem;
-        font-size: 0.875rem;
       }
 
       .result-item img {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
       }
 
       .result-item span {
-        font-size: 0.75rem;
+        font-size: 0.875rem;
       }
     }
   </style>
 </head>
 
-<body class="flex">
-  <div class="sidebar flex flex-col items-start p-6">
-    <h1>Naxxex</h1>
-    <p>Your music, your vibe.</p>
+<body>
+
+  <div class="main">
+    <input type="text" id="searchInput" class="search-input" placeholder="Search for a song..." />
+    <button id="searchBtn" class="search-button">Search</button>
+    <ul id="results" class="space-y-2 overflow-y-auto max-h-[400px]"></ul>
   </div>
 
-  <div class="flex-1 p-6">
-    <div class="max-w-lg mx-auto">
-      <input type="text" id="searchInput" class="search-input" placeholder="Search for a song..." />
-      <button id="searchBtn" class="search-button mt-2">Search</button>
-      <ul id="results" class="mt-4 space-y-2 overflow-y-auto max-h-[400px]"></ul>
-    </div>
+  <div class="bottom-nav">
+    <img src="https://img.icons8.com/ios-filled/50/007AFF/music.png" alt="Library">
+    <img src="https://img.icons8.com/ios-filled/50/007AFF/search.png" alt="Search">
+    <img src="https://img.icons8.com/ios-filled/50/007AFF/settings.png" alt="Settings">
   </div>
 
   <script>
@@ -165,6 +158,7 @@
       });
     });
   </script>
+
 </body>
 
 </html>
